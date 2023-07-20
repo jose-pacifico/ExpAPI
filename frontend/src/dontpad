@@ -1,0 +1,79 @@
+App.js
+
+import React from 'react';
+import axios from "axios";
+import useForm from './hooks/useForm';
+
+export default () => {
+  const [{ values, loading }, handleChange, handleSubmit] = useForm();
+  const [post, setPost] = React.useState(null);
+
+  const baseURL = "https://jsonplaceholder.typicode.com/posts";
+
+  React.useEffect(() => {
+    axios.get(`${baseURL}/1`).then((response) => {
+      setPost(response.data);
+    });
+  }, []);
+
+  const enviarContato = () => {
+    
+    axios
+    .post(baseURL, {...form})
+    .then((response) => {
+      setPost(response.data);
+    });
+    console.log(values);
+  };
+
+  return (
+    <div>
+      <h1>Contato</h1>
+      <form onSubmit={handleSubmit(enviarContato)}>
+        <input
+          onChange={handleChange}
+          type="text"
+          name="title"
+          placeholder="Digite o título"
+        />
+        <input
+          onChange={handleChange}
+          type="text"
+          name="body"
+          placeholder="Digite o assunto"
+        />        
+        <button type="submit">{loading ? 'Enviando...' : 'Enviar'}</button>
+      </form>
+    </div>
+  );
+};
+
+-----------------------------------------------------
+src/Hooks/userForm.js
+
+
+import { useState } from 'react';
+
+const useForm = (callback) => {
+  const [values, setValues] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (event) => {
+    const auxValues = { ...values }; //spread operator para expandir conteudo dos arrays
+    auxValues[event.target.name] = event.target.value;
+    setValues(auxValues);
+  };
+
+  const handleSubmit = (callback) => (event) => {
+    event.preventDefault();
+    setLoading(true);
+    callback();
+    setLoading(false);
+  };
+
+  return [{ values, loading }, handleChange, handleSubmit];
+};
+
+export default useForm;
+
+
