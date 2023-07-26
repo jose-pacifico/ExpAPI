@@ -5,10 +5,11 @@ import checkAdmin from '../../middlewares/checkAdmin';
 
 const router = Router();
 
-router.get('/', checkAuth, produtoController.index);
-router.post('/', checkAuth, checkAdmin, produtoController.create);
-router.get('/:id', checkAuth, produtoController.read);
-router.put('/:id', checkAuth, checkAdmin, produtoController.update);
-router.delete('/:id', checkAuth, checkAdmin, produtoController.remove);
+//TODO: Retornar os middlewares de controle de usuário
+router.get('/', produtoController.index);
+router.post('/', produtoController.create);
+router.get('/:id', produtoController.read);
+router.put('/:id', produtoController.update);
+router.delete('/:id', produtoController.remove);
 
 export default router;

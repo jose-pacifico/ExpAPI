@@ -16,6 +16,7 @@ import setLocals from './middlewares/setLocals';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
+import cors from 'cors';
 
 const models = [VersaoDB, Usuario, TipoUsuario, Produto, Compra, CompraItem];
 
@@ -62,6 +63,13 @@ export class Api {
       }),
     );
     this.server.use(logger('completo'));
+
+    // Configurando o CORS para permitir solicitações do frontend
+    this.server.use(
+      cors({
+        origin: 'http://localhost:3366',
+      }),
+    );
   }
 
   private async router() {

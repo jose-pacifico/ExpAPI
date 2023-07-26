@@ -16,9 +16,8 @@ class Navbar extends Component {
                     Produtos
                   </a>
                   <ul className="dropdown-menu">
+                    <li><a className="dropdown-item" href="#">Listar</a></li>
                     <li><a className="dropdown-item" href="#">Adicionar</a></li>
-                    <li><a className="dropdown-item" href="#">Editar</a></li>
-                    <li><a className="dropdown-item" href="#">Deletar</a></li>
                   </ul>
                 </li>
                 <li className="nav-item">
