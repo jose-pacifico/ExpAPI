@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ProductForm from './ProductForm';
 
 const ProdutoList = () => {
   const [produtos, setProdutos] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
   const apiURL = "http://localhost:3333/v1/produto";
 
   useEffect(() => {
@@ -28,9 +32,28 @@ const ProdutoList = () => {
     }
   };
 
+  const handleAdd = () => {
+    setSelectedProduct(null);
+    setIsEditing(true);
+  };
+
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setSelectedProduct(null);
+    setIsEditing(false);
+  };
+
   return (
     <div>
       <h1>Lista de Produtos</h1>
+      <button type="button" className="btn btn-success" onClick={handleAdd}>Adicionar Produto</button>
+      {isEditing  ? (
+        <ProductForm product={selectedProduct} onCancelEdit={handleCancelEdit} />
+      ) : (
       <table className="table table-striped">
         <thead>
           <tr>
@@ -42,15 +65,15 @@ const ProdutoList = () => {
           </tr>
         </thead>
         <tbody>
-        {produtos.map((produto, index) => (
+        {produtos.map((produto) => (
           <>
           <tr>
-            <td key={index}>{produto.nome}</td>
-            <td key={index}>{produto.preco}</td>
-            <td key={index}>{produto.estoque}</td>
-            <td key={index}>{produto.createdAt}</td>
-            <td key={index}> 
-              <a href="#!"><i className="bi bi-pencil-fill" onClick={() => rmProduto(produto.id)}></i></a>
+            <td key={produto.id}>{produto.nome}</td>
+            <td key={produto.id}>{produto.preco}</td>
+            <td key={produto.id}>{produto.estoque}</td>
+            <td key={produto.id}>{produto.createdAt}</td>
+            <td key={produto.id}> 
+              <a href="#!"><i className="bi bi-pencil-fill" onClick={() => handleEdit(produto)}></i></a>
               |
               <a href="#!"><i className="bi bi-trash3-fill" onClick={() => rmProduto(produto.id)}></i></a>
             </td>
@@ -59,9 +82,8 @@ const ProdutoList = () => {
         ))}
         </tbody>
       </table>
-      <ul>
-        
-      </ul>
+      )
+      }
     </div>
   );
 };
