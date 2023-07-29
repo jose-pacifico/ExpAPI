@@ -5,7 +5,7 @@ import checkAdmin from '../../middlewares/checkAdmin';
 
 const router = Router();
 
-router.get('/', checkAuth, produtoController.index);
+router.get('/', produtoController.index);
 router.post('/', checkAuth, checkAdmin, produtoController.create);
 router.get('/:id', checkAuth, produtoController.read);
 router.put('/:id', checkAuth, checkAdmin, produtoController.update);

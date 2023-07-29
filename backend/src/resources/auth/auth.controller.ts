@@ -3,7 +3,7 @@ import { createUsuario } from '../usuario/usuario.services';
 import { Usuario } from '../../models/Usuario';
 import { createUsuarioDto } from '../usuario/usuario.types';
 import { TipoUsuarios } from '../tipoUsuario/tipoUsuario.constants';
-import { checkCredentials } from './auth.services';
+import { checkCredentials, checkIsAdmin } from './auth.services';
 import bcrypt from 'bcryptjs';
 
 const signup = async (req: Request, res: Response) => {
@@ -38,7 +38,10 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ msg: 'Email e/ou Senha incorretos' });
     req.session.uid = usuario.id;
     req.session.tipoUsuarioId = usuario.tipoUsuarioId;
-    res.status(200).json({ msg: 'Usuário Logado!' });
+    res.status(200).json({
+      isAdmin: await checkIsAdmin(usuario.id),
+      msg: 'Usuário Logado!',
+    });
   } catch (e) {
     res.status(200).json(e);
   }
